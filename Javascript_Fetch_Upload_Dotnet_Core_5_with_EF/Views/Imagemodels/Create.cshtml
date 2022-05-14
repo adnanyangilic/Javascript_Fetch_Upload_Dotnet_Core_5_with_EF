@@ -1,0 +1,80 @@
+﻿@model Javascript_Fetch_Upload_Dotnet_Core_5_with_EF.Models.Imagemodel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Imagemodel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ImagemodelName" class="control-label"></label>
+                <input asp-for="ImagemodelName" class="form-control" />
+                <span asp-validation-for="ImagemodelName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImagemodelComment" class="control-label"></label>
+                <input asp-for="ImagemodelComment" id="ImagemodelComment" class="form-control" />
+                <span asp-validation-for="ImagemodelComment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="File" name="Imageitself" class="form-control" />
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="uploaded_image"></div>
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        const Imageitself = document.getElementsByName('Imageitself')[0];
+        const ImagemodelComment = document.getElementById('ImagemodelComment');
+        Imageitself.addEventListener('change', (e) => {
+            e.preventDefault;
+        upload_image(Imageitself.files[0]);
+        });
+        const upload_image = (file) => {
+        // check file type
+        if(!['image/jpeg', 'image/png'].includes(file.type))
+        {
+            document.getElementById('uploaded_image').innerHTML = '<div class="alert alert-danger">Only .jpg and .png image are allowed</div>';
+            document.getElementsByName('Imageitself')[0].value = '';
+            return;
+        }
+        // check file size (< 2MB)
+        if(file.size > 2 * 1024 * 1024)
+        {
+            document.getElementById('uploaded_image').innerHTML = '<div class="alert alert-danger">File must be less than 2 MB</div>';
+            document.getElementsByName('Imageitself')[0].value = '';
+            return;
+        }
+        const form_data = new FormData();
+        form_data.append('Imageitself', file);
+        form_data.append('ImagemodelComment', ImagemodelComment);
+        fetch("Create", {
+            method:"POST",
+            body : form_data
+        }).then(function(response){
+            return response.json();
+        }).then(function(responseData){
+            //document.getElementById('uploaded_image').innerHTML = '<div class="alert alert-success">Image Uploaded Successfully</div> <img src="'+responseData.image_source+'" class="img-thumbnail" />';
+            //document.getElementsByName('Imageitself')[0].value = '';
+        });
+        }
+    </script>
+
+}

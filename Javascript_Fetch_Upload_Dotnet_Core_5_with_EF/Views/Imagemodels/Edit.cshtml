@@ -1,0 +1,39 @@
+﻿@model Javascript_Fetch_Upload_Dotnet_Core_5_with_EF.Models.Imagemodel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Imagemodel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ImagemodelId" />
+            <div class="form-group">
+                <label asp-for="ImagemodelName" class="control-label"></label>
+                <input asp-for="ImagemodelName" class="form-control" />
+                <span asp-validation-for="ImagemodelName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImagemodelComment" class="control-label"></label>
+                <input asp-for="ImagemodelComment" class="form-control" />
+                <span asp-validation-for="ImagemodelComment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
